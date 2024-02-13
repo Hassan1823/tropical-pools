@@ -32,7 +32,7 @@ const AboutComp = () => {
 
       {/* WHy tropicals */}
       <div
-        className="w-full min-h-[60vh] h-auto py-4"
+        className="w-full h-auto py-4"
         style={{
           backgroundImage: `url(${bgImage.src})`, // Set the background image using inline style
           backgroundSize: "cover",
@@ -47,7 +47,7 @@ const AboutComp = () => {
         >
           Why Tropical Pools <span className="text-blue-300"> ?</span>
         </h1>
-        <div className="flex flex-wrap items-center w-full h-auto justify-evenly">
+        <div className="flex flex-wrap items-center justify-center w-full h-auto gap-8 p-4">
           {WhyTropicalCardData.map((card, index) => (
             <WhyTropicalCard
               key={index}

@@ -11,8 +11,8 @@ import Image from "next/image";
 
 const WhyTropicalCard = ({ title, image, description }) => {
   return (
-    <div className="flex flex-col items-center justify-center h-auto gap-2 p-8 w-96">
-      <Card className="text-white border border-blue-400 bg-blue-300/20">
+    // <div className="flex flex-col items-center justify-center h-auto gap-2 p-2 w-96">
+      <Card className="flex flex-col text-white border border-blue-400 bg-blue-300/20 w-96 min-h-[60vh] h-auto">
         <CardHeader>
           <CardTitle className="text-2xl">{title}</CardTitle>
         </CardHeader>
@@ -20,7 +20,7 @@ const WhyTropicalCard = ({ title, image, description }) => {
           <Image
             src={image}
             alt="product"
-            width={250}
+            width={200}
             height={200}
             className="object-contain mx-auto"
           />
@@ -31,7 +31,7 @@ const WhyTropicalCard = ({ title, image, description }) => {
           </CardDescription>
         </CardFooter>
       </Card>
-    </div>
+    // </div>
   );
 };
 
