@@ -1,19 +1,17 @@
-import React from "react";
 import {
   Card,
   CardContent,
-  CardTitle,
-  CardHeader,
   CardDescription,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import ProductImage from "@/public/images/products.png";
 
 import Image from "next/image";
 
 const WhyTropicalCard = ({ title, image, description }) => {
   return (
-    <div className="w-[25%] h-auto flex flex-col justify-center items-center mx-auto">
+    <div className="flex flex-col items-center justify-center h-auto gap-2 p-8 w-96">
       <Card className="text-white border border-blue-400 bg-blue-300/20">
         <CardHeader>
           <CardTitle className="text-2xl">{title}</CardTitle>

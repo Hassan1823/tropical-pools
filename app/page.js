@@ -1,6 +1,8 @@
 import Heading from "@/utils/Heading";
 import Hero from "./components/Hero";
 import AboutComp from "./components/About";
+import PoolCard from "./components/pool-card";
+import CustomerReview from "./components/customer-review";
 
 export default function Home() {
   return (
@@ -13,6 +15,8 @@ export default function Home() {
         />
         <Hero />
         <AboutComp />
+        <PoolCard />
+        <CustomerReview />
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import bgImage from "@/public/images/hero-bg.jpg";
 import { cn } from "@/lib/utils";
 
 import { Permanent_Marker } from "next/font/google";
+import { Button } from "@/components/ui/button";
 const h1Font = Permanent_Marker({
   weight: ["400"],
   subsets: ["latin"],
@@ -49,9 +50,9 @@ const Hero = () => {
           <span className="text-blue-300 animate-pulse">{currentText}</span>
         </p>
 
-        <button className="p-3 font-semibold bg-blue-400 rounded-md">
+        <Button variant="default" size="lg">
           Get A Quote
-        </button>
+        </Button>
       </div>
     </div>
   );
