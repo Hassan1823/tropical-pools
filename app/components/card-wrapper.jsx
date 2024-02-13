@@ -12,7 +12,14 @@ import {
 import { CgGoogle } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
 
-const CardWrapper = ({ children, title, titleLabel, btnLabel, btnLink }) => {
+const CardWrapper = ({
+  children,
+  title,
+  titleLabel,
+  btnLabel,
+  btnLink,
+  forgotPassword,
+}) => {
   return (
     <Card className="w-[400px] shadow-md">
       <CardHeader>
@@ -30,12 +37,21 @@ const CardWrapper = ({ children, title, titleLabel, btnLabel, btnLink }) => {
         </div>
       </CardFooter>
 
-      <CardFooter>
+      <CardFooter className="flex flex-col items-center justify-center w-full">
         <Button variant="link" className="w-full text-center">
           <Link href={btnLink} passHref>
             {btnLabel}
           </Link>
         </Button>
+        {forgotPassword && (
+          <>
+            <Button variant="link" className="w-full text-center">
+              <Link href={"/"} passHref>
+                Forgot Password
+              </Link>
+            </Button>
+          </>
+        )}
       </CardFooter>
     </Card>
   );

@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import CardWrapper from "@/app/components/card-wrapper";
+import FormError from "@/app/components/form-error";
+import FormSuccess from "@/app/components/form-success";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,14 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { LoginSchema } from "@/schema";
-import CardWrapper from "@/app/components/card-wrapper";
-import FormError from "@/app/components/form-error";
-import FormSuccess from "@/app/components/form-success";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
@@ -54,6 +53,8 @@ const LoginPage = () => {
         titleLabel={"Welcome Back"}
         btnLabel={"Register Yourself!"}
         btnLink={"/register"}
+        forgotPassword={true}
+
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

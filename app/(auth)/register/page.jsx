@@ -32,6 +32,7 @@ const RegisterPage = () => {
       email: "",
       password: "",
       name: "",
+      confirmPassword: "",
     },
   });
 
@@ -42,8 +43,12 @@ const RegisterPage = () => {
     setSuccess("");
 
     startTransition(() => {
-      setSuccess("All Done !");
-      console.log(`Waiting for the response ...`);
+      if (values.password === values.confirmPassword) {
+        setSuccess("All Done !");
+        console.log(`Waiting for the response ...`);
+      } else {
+        setError("Password Must Be Matched");
+      }
     });
   };
 
@@ -103,6 +108,25 @@ const RegisterPage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        placeholder="******"
+                        type="password"
+                        className={`${isPending && "cursor-not-allowed"}`}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
