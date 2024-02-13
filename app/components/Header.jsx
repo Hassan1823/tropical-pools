@@ -133,8 +133,7 @@ const Header = ({ activeItem, setOpen, open }) => {
               <NavItems activeItem={activeItem} isMobile={true} />
               <Link href={`/cart`} passHref>
                 <IoIosCart
-                  size={25}
-                  className="w-full mx-auto my-3 text-white cursor-pointer "
+                  className="w-12 h-12 mx-auto my-3 text-white cursor-pointer "
                 />
               </Link>
 
