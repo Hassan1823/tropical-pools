@@ -96,7 +96,7 @@ const AboutPage = () => {
         About Us
       </h1>
 
-      <div className="w-full min-h-[70vh] py-8 h-auto bg-about-bg bg-cover flex flex-wrap justify-evenly items-center text-center">
+      <div className="w-full min-h-[70vh] py-8 h-auto bg-about-bg1 bg-cover flex flex-wrap justify-evenly items-center text-center">
         {/* left div */}
         <div className="w-full md:w-[45%] h-auto flex flex-col justify-evenly items-center gap-8">
           <h1
@@ -284,7 +284,7 @@ const AboutPage = () => {
                         }`}
                         disabled={isPending}
                       >
-                        Login
+                        Submit
                       </Button>
                     </form>
                   </Form>
