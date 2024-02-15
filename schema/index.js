@@ -39,3 +39,9 @@ export const QueriesSchema = z.object({
     message: "Please Write Your Query",
   }),
 });
+
+export const ProductReviewSchema = z.object({
+  review: z.string().min(1, {
+    message: "Please Write Your Review",
+  }),
+});
