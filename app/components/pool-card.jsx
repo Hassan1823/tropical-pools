@@ -27,13 +27,15 @@ const PoolCard = () => {
 
   const handleClick = (index) => {
     setHoverStates((prevStates) =>
-      prevStates.map((state, idx) => (idx === index ? !state : state))
+      prevStates.map((state, idx) => (idx === index ? true : false))
     );
   };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-auto py-8 text-center">
-      <h1 className="text-3xl font-bold text-black lg:text-4xl">Pool Details</h1>
+      <h1 className="text-3xl font-bold text-black lg:text-4xl">
+        Pool Details
+      </h1>
       <div className="flex flex-wrap items-center justify-center w-full h-auto gap-5 py-8 ">
         {PoolDetailsData.map((card, index) => {
           return (
@@ -77,10 +79,10 @@ const PoolCard = () => {
           );
         })}
       </div>
-      <Link href={''} passHref>
-      <Button variant="default" size="lg">
-        More
-      </Button>
+      <Link href={""} passHref>
+        <Button variant="default" size="lg">
+          More
+        </Button>
       </Link>
     </div>
   );
