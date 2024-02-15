@@ -1,9 +1,12 @@
-import React from 'react'
+import PoolCard from "@/app/components/pool-card";
+import React from "react";
 
 const GalleryPage = () => {
   return (
-    <div>GalleryPage</div>
-  )
-}
+    <div className="w-full h-auto">
+      <PoolCard />
+    </div>
+  );
+};
 
-export default GalleryPage
+export default GalleryPage;

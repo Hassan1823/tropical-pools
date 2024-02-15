@@ -4,7 +4,7 @@ import AboutComp from "./components/About";
 import PoolCard from "./components/pool-card";
 import CustomerReview from "./components/customer-review";
 
-export default function Home() {
+export default function Hom () {
   return (
     <>
       <div className="w-full h-auto ">
