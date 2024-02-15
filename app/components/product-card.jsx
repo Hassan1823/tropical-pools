@@ -10,10 +10,16 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+import Link from "next/link";
+
+import { usePathname } from "next/navigation";
+
 import Image from "next/image";
 import StarRating from "./StarRating";
 
 const ProductCard = ({ product }) => {
+  const pathName = usePathname();
+
   return (
     <Card className="w-72 h-auto flex flex-col justify-center items-center text-center">
       <CardHeader>
@@ -36,9 +42,11 @@ const ProductCard = ({ product }) => {
         </CardDescription>
       </CardContent>
       <CardFooter>
-        <Button variant="default" size="lg">
-          Explore
-        </Button>
+        <Link href={`${pathName}/${product.title}`} passHref>
+          <Button variant="default" size="lg">
+            Explore
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
