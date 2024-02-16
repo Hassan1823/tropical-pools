@@ -11,14 +11,18 @@ const h1Font = Permanent_Marker({
   subsets: ["latin"],
 });
 
+import { images } from "@/lib/images";
+
 const AboutComp = () => {
+  // console.log("images are :");
+  // console.table(images);
   return (
     <div className="flex flex-col w-full h-auto pt-8 text-center">
       <h1 className="text-3xl font-bold text-black lg:text-4xl">About Us</h1>
 
       <div className="flex items-start justify-center w-full h-auto max-xl:flex-col">
         <div className="w-full h-auto duration-300 xl:w-1/2">
-          <SliderSwiper />
+          <SliderSwiper data={images} />
         </div>
         <div className="w-full min-h-[40vh] h-auto duration-300 xl:w-1/2 xl:py-24 py-0 space-y-6 mb-6">
           <p className="w-full px-8 text-sm xl:text-base">

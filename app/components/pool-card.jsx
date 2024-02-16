@@ -7,8 +7,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 import { PoolDetailsData } from "@/lib/data";
+import { usePathname } from "next/navigation";
 
 const PoolCard = () => {
+  const pathName = usePathname();
+
   const [hoverStates, setHoverStates] = useState(
     new Array(PoolDetailsData.length).fill(false)
   );
@@ -69,7 +72,7 @@ const PoolCard = () => {
               </div>
               {/* bottom content */}
               <div className="flex items-center justify-center w-full h-auto p-2 text-center">
-                <Link href="" passHref>
+                <Link href={`/gallery/${card.title}`} passHref>
                   <Button variant="default" size="xl">
                     More Info
                   </Button>
@@ -79,11 +82,11 @@ const PoolCard = () => {
           );
         })}
       </div>
-      <Link href={""} passHref>
+      {/* <Link href={""} passHref>
         <Button variant="default" size="lg">
           More
         </Button>
-      </Link>
+      </Link> */}
     </div>
   );
 };

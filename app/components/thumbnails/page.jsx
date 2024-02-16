@@ -1,23 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-
-import { images } from "@/lib/images";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
-export default function SliderSwiper() {
+export default function SliderSwiper({ data }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
-    <section className="min-h-screen py-12 bg-white">
+    <section className="h-auto py-12 bg-white">
       <div className="container">
         <Swiper
           loop={true}
@@ -30,7 +28,7 @@ export default function SliderSwiper() {
           modules={[FreeMode, Navigation, Thumbs]}
           className="w-full rounded-lg h-96"
         >
-          {images.map((image, index) => (
+          {data.map((image, index) => (
             <SwiperSlide key={index}>
               <div className="flex items-center justify-center w-full h-full">
                 <Image
@@ -48,13 +46,13 @@ export default function SliderSwiper() {
           onSwiper={setThumbsSwiper}
           loop={true}
           spaceBetween={12}
-          slidesPerView={8}
+          slidesPerView={data.length <= 5 ? data.length : 5}
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
           className="w-full h-16 mt-3 rounded-lg thumbs"
         >
-          {images.map((image, index) => (
+          {data.map((image, index) => (
             <SwiperSlide key={index}>
               <button className="flex items-center justify-center w-full h-full">
                 <Image
