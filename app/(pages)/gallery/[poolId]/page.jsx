@@ -1,4 +1,3 @@
-import SliderSwiper from "@/app/components/thumbnails/page";
 import { Button } from "@/components/ui/button";
 import { imagesPool } from "@/lib/images";
 import Link from "next/link";
@@ -10,6 +9,7 @@ import { GiCube } from "react-icons/gi";
 import { CgFormatLineHeight } from "react-icons/cg";
 import GetAQuote from "@/app/components/get-a-quote";
 import TabsComp from "@/app/components/Tabs";
+import SliderSwiper from "@/app/components/thumbnail";
 
 const SinglePool = ({ params }) => {
   const poolName = decodeURIComponent(params.poolId);

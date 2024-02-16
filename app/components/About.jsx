@@ -3,7 +3,6 @@ import bgImage from "@/public/images/water_bg.png";
 import { cn } from "@/lib/utils";
 import WhyTropicalCard from "./why-card";
 import { WhyTropicalCardData } from "@/lib/data";
-import SliderSwiper from "./thumbnails/page";
 
 import { Permanent_Marker } from "next/font/google";
 const h1Font = Permanent_Marker({
@@ -12,6 +11,7 @@ const h1Font = Permanent_Marker({
 });
 
 import { images } from "@/lib/images";
+import SliderSwiper from "./thumbnail";
 
 const AboutComp = () => {
   // console.log("images are :");

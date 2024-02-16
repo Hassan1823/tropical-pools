@@ -11,7 +11,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
-export default function SliderSwiper({ data }) {
+const SliderSwiper = ({ data }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -67,4 +67,6 @@ export default function SliderSwiper({ data }) {
       </div>
     </section>
   );
-}
+};
+
+export default SliderSwiper;
