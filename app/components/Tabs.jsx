@@ -74,11 +74,7 @@ const TabsComp = () => {
               {`Casting out into the deep end, the Ariella provides the user with a “shallow” deep end. Coming in at only 4′ 11″, it’s hard to even classify the hopper as a true deep end. However, the benefit of such a shallow space is the safety provided to the user. This fiberglass pool is a great option for homeowners who invite guests, have a guest house, renters, etc. In essence, this model provides a great swim space without the added liability of a deep end.`}
             </CardDescription>
           </CardHeader>
-          {/* <CardContent className="space-y-2">
-            <CardDescription>
-              {`The Ariella works exceptionally well for those who live in urban environments with limited yard space. Why? Mainly it’s a petite size. Amazingly, this pool only takes up 179 SQFT with outside dimensions of 11′ width & 19′ 10″ length. Therefore, you could situate this design into small backyard spaces or place it strategically in a specific location of a larger backyard. However you situate this free form pool, you’ll enjoy its narrow footprint and ease of maintenance!`}
-            </CardDescription>
-          </CardContent> */}
+
           <CardContent className="space-y-2">
             <CardTitle className="text-lg">
               {`The Features of The Ariella`}
@@ -102,19 +98,7 @@ const TabsComp = () => {
               {`Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk`}
             </CardDescription>
           </CardHeader>
-          {/* <CardContent className="space-y-2">
-            <CardDescription>
-              {`The Ariella works exceptionally well for those who live in urban environments with limited yard space. Why? Mainly it’s a petite size. Amazingly, this pool only takes up 179 SQFT with outside dimensions of 11′ width & 19′ 10″ length. Therefore, you could situate this design into small backyard spaces or place it strategically in a specific location of a larger backyard. However you situate this free form pool, you’ll enjoy its narrow footprint and ease of maintenance!`}
-            </CardDescription>
-          </CardContent> */}
-          {/* <CardContent className="space-y-2">
-            <CardTitle className="text-lg">
-              {`The Features of The Ariella`}
-            </CardTitle>
-            <CardDescription>
-              {`In conclusion, the Ariella is a very special member of our San Juan Pools family. We are very grateful for our small fiberglass pool category because of the wide breadth of consumers that fit this category. From urban homes to large backyards that want a smaller swimming pool; we can cater to a wide range of clientele.`}
-            </CardDescription>
-          </CardContent> */}
+
           <CardContent className="space-y-2">
             <div className="flex justify-start w-full h-auto gap-4 text-start">
               <FaLocationDot className="w-5 h-5 text-blue-500" />
