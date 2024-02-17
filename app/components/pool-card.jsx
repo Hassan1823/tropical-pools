@@ -126,7 +126,7 @@ const PoolCard = () => {
           </PaginationItem>
           {PoolDetailsData.length / range <= pages &&
             PoolDetailsData.slice(0, indexLimit).map((page, index) => (
-              <PaginationItem>
+              <PaginationItem key={index}>
                 <PaginationLink
                   className="cursor-not-allowed"
                   isActive={currentPage === index + 1 ? true : false}

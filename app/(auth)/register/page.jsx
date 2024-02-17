@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useEffect, useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -18,12 +18,37 @@ import { RegisterSchema } from "@/schema";
 import CardWrapper from "@/app/components/card-wrapper";
 import FormError from "@/app/components/form-error";
 import FormSuccess from "@/app/components/form-success";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
+
+  const [register, { isError, isLoading, data, isSuccess }] =
+    useRegisterMutation();
+
+  useEffect(() => {
+    if (isLoading) {
+      console.log("loading ...");
+    }
+    if (isError) {
+      console.log(isError);
+      toast.error(isError);
+    }
+
+    if (isSuccess) {
+      const message = data?.message || "Registration Done";
+      console.log(message);
+      router.push("/activate");
+      toast.success(message);
+    }
+  }, [isSuccess, isError]);
 
   // ! define the form
   const form = useForm({
@@ -37,12 +62,14 @@ const RegisterPage = () => {
   });
 
   // ~ handle form onsubmit
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     console.log(values);
     setError("");
     setSuccess("");
 
-    startTransition(() => {
+    const { email, password, name } = values;
+    await register({ email, password, name });
+    startTransition(async () => {
       if (values.password === values.confirmPassword) {
         setSuccess("All Done !");
         console.log(`Waiting for the response ...`);
@@ -72,11 +99,11 @@ const RegisterPage = () => {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={isPending}
+                        disabled={isLoading}
                         {...field}
                         placeholder="John"
                         type="text"
-                        className={`${isPending && "cursor-not-allowed"}`}
+                        className={`${isLoading && "cursor-not-allowed"}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -91,11 +118,11 @@ const RegisterPage = () => {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={isPending}
+                        disabled={isLoading}
                         {...field}
                         placeholder="example@gmail.com"
                         type="email"
-                        className={`${isPending && "cursor-not-allowed"}`}
+                        className={`${isLoading && "cursor-not-allowed"}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -110,11 +137,11 @@ const RegisterPage = () => {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={isPending}
+                        disabled={isLoading}
                         {...field}
                         placeholder="******"
                         type="password"
-                        className={`${isPending && "cursor-not-allowed"}`}
+                        className={`${isLoading && "cursor-not-allowed"}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -129,11 +156,11 @@ const RegisterPage = () => {
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={isPending}
+                        disabled={isLoading}
                         {...field}
                         placeholder="******"
                         type="password"
-                        className={`${isPending && "cursor-not-allowed"}`}
+                        className={`${isLoading && "cursor-not-allowed"}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -148,8 +175,8 @@ const RegisterPage = () => {
 
             <Button
               type="submit"
-              className={`w-full ${isPending && "cursor-not-allowed"}`}
-              disabled={isPending}
+              className={`w-full ${isLoading && "cursor-not-allowed"}`}
+              disabled={isLoading}
             >
               Register
             </Button>

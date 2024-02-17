@@ -5,6 +5,8 @@ import "./globals.css";
 import Header from "./components/Header";
 import { useState } from "react";
 import Footer from "./components/Footer";
+import { Providers } from "./Provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -14,9 +16,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header open={open} setOpen={setOpen} activeItem={activeItem} />
-        {children}
-        <Footer />
+        <Providers>
+          <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+          {children}
+          <Footer />
+        </Providers>
+        <Toaster />
       </body>
     </html>
   );

@@ -90,7 +90,7 @@ const ProductsPage = () => {
             </PaginationItem>
             {ProductsData.length / range <= pages &&
               ProductsData.slice(0, indexLimit).map((page, index) => (
-                <PaginationItem>
+                <PaginationItem key={index}>
                   <PaginationLink
                     className="cursor-not-allowed"
                     isActive={currentPage === index + 1 ? true : false}
