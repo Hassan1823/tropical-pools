@@ -7,10 +7,37 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 import { PoolDetailsData } from "@/lib/data";
-import { usePathname } from "next/navigation";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+const range = 5;
 
 const PoolCard = () => {
-  const pathName = usePathname();
+  const [previous, setPrevious] = useState(0);
+  const [limit, setLimit] = useState(range);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleNextPage = () => {
+    if (previous >= 0 && limit < PoolDetailsData.length) {
+      setPrevious((prevPrevious) => setPrevious(previous + range));
+      setLimit((prevLimit) => setLimit(limit + range));
+      setCurrentPage((prevCurrentPage) => currentPage + 1);
+    }
+  };
+  const handlePreviousPage = () => {
+    if (!previous <= 0 && limit >= range) {
+      setPrevious((prevPrevious) => setPrevious(previous - range));
+      setLimit((prevLimit) => setLimit(limit - range));
+      setCurrentPage((prevCurrentPage) => currentPage - 1);
+    }
+  };
 
   const [hoverStates, setHoverStates] = useState(
     new Array(PoolDetailsData.length).fill(false)
@@ -34,13 +61,18 @@ const PoolCard = () => {
     );
   };
 
+  let pages = Math.ceil(PoolDetailsData.length / range);
+  console.log("pages are : ", pages);
+
+  const indexLimit = pages >= 3 ? 3 : pages;
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-auto py-8 text-center">
       <h1 className="text-3xl font-bold text-black lg:text-4xl">
         Pool Details
       </h1>
       <div className="flex flex-wrap items-center justify-center w-full h-auto gap-5 py-8 ">
-        {PoolDetailsData.map((card, index) => {
+        {PoolDetailsData.slice(previous, limit).map((card, index) => {
           return (
             <div
               className="w-[25vw] max-sm:w-[80vw] max-lg:w-[40vw] h-auto p-2 rounded-md shadow-md shadow-blue-200"
@@ -73,7 +105,7 @@ const PoolCard = () => {
               {/* bottom content */}
               <div className="flex items-center justify-center w-full h-auto p-2 text-center">
                 <Link href={`/gallery/${card.title}`} passHref>
-                  <Button variant="default" size="xl">
+                  <Button variant="default" size="lg">
                     More Info
                   </Button>
                 </Link>
@@ -82,11 +114,37 @@ const PoolCard = () => {
           );
         })}
       </div>
-      {/* <Link href={""} passHref>
-        <Button variant="default" size="lg">
-          More
-        </Button>
-      </Link> */}
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem
+            className={`cursor-pointer ${
+              currentPage <= 1 && "cursor-not-allowed"
+            }`}
+          >
+            <PaginationPrevious onClick={handlePreviousPage} />
+          </PaginationItem>
+          {PoolDetailsData.length / range <= pages &&
+            PoolDetailsData.slice(0, indexLimit).map((page, index) => (
+              <PaginationItem>
+                <PaginationLink
+                  className="cursor-not-allowed"
+                  isActive={currentPage === index + 1 ? true : false}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+          <PaginationItem
+            className={`cursor-pointer ${
+              currentPage >= pages && "cursor-not-allowed"
+            }`}
+          >
+            {/* {currentPage === pages && "hello"} */}
+            <PaginationNext onClick={handleNextPage} />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };
