@@ -46,7 +46,7 @@ const CardWrapper = ({
         {forgotPassword && (
           <>
             <Button variant="link" className="w-full text-center">
-              <Link href={"/"} passHref>
+              <Link href={"/forgot-password"} passHref>
                 Forgot Password
               </Link>
             </Button>
