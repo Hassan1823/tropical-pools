@@ -56,13 +56,11 @@ const SingleProduct = ({ params }) => {
 
   //   form submit function
   const onSubmit = (values) => {
-    console.log(values);
     setError("");
     setSuccess("");
 
     startTransition(() => {
       setSuccess("All Done!");
-      console.log(`Waiting for the response...`);
     });
   };
 

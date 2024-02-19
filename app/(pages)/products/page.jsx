@@ -44,10 +44,8 @@ const ProductsPage = () => {
   };
 
   let pages = Math.ceil(ProductsData.length / range);
-  console.log("pages are : ", pages);
 
   const indexLimit = pages >= 3 ? 3 : pages;
-  console.log(search);
   return (
     <div className="w-full min-h-screen h-auto">
       {/* head bar  */}

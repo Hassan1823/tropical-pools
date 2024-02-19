@@ -12,42 +12,9 @@ import { IoRefreshCircle } from "react-icons/io5";
 import { MdSupportAgent } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
 import GetAQuote from "@/app/components/get-a-quote";
-import { QueriesSchema } from "@/schema";
-import { useState, useTransition } from "react";
 
 const AboutPage = () => {
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const [isPending, startTransition] = useTransition();
-
-  // ! define the form
-  const form = useForm({
-    resolver: zodResolver(QueriesSchema),
-    defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-      message: "",
-    },
-  });
-
-  // ~ handle form onsubmit
-  const onSubmit = (values) => {
-    console.log(values);
-    setError("");
-    setSuccess("");
-
-    startTransition(() => {
-      setSuccess("All Done !");
-      console.log(`Waiting for the response ...`);
-    });
-  };
-
   return (
     <div className="w-full h-auto min-h-screen text-white">
       <div className="w-full min-h-[70vh] h-auto bg-about-bg bg-cover space-y-6 flex flex-col justify-center items-center text-center">

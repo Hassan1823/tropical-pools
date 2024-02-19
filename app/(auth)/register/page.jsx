@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useTransition } from "react";
+import CardWrapper from "@/app/components/card-wrapper";
+import FormError from "@/app/components/form-error";
+import FormSuccess from "@/app/components/form-success";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,16 +13,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { RegisterSchema } from "@/schema";
-import CardWrapper from "@/app/components/card-wrapper";
-import FormError from "@/app/components/form-error";
-import FormSuccess from "@/app/components/form-success";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { RegisterSchema } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const RegisterPage = () => {
@@ -34,17 +33,12 @@ const RegisterPage = () => {
     useRegisterMutation();
 
   useEffect(() => {
-    if (isLoading) {
-      console.log("loading ...");
-    }
     if (isError) {
-      console.log(isError);
       toast.error(isError);
     }
 
     if (isSuccess) {
       const message = data?.message || "Registration Done";
-      console.log(message);
       router.push("/activate");
       toast.success(message);
     }
@@ -63,7 +57,6 @@ const RegisterPage = () => {
 
   // ~ handle form onsubmit
   const onSubmit = async (values) => {
-    console.log(values);
     setError("");
     setSuccess("");
 
@@ -71,7 +64,6 @@ const RegisterPage = () => {
     if (values.password === values.confirmPassword) {
       // setSuccess("All Done !");
       await register({ email, password, name });
-      console.log(`Waiting for the response ...`);
     } else {
       setError("Password Must Be Matched");
     }

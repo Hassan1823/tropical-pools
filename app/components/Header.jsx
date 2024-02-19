@@ -1,9 +1,9 @@
 "use client";
 
 // !imports
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 // ! lib import
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
@@ -14,48 +14,43 @@ import NavItems from "@/utils/NavItems";
 import { useSelector } from "react-redux";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import {
   useLogoutQuery,
   useSocialAuthMutation,
 } from "@/redux/features/auth/authApi";
+import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const Header = ({ activeItem, setOpen, open }) => {
   const router = useRouter();
 
   const { data } = useSession();
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
-  // const { user: userData } = useSelector((state) => state.auth);
-
-  console.log("data");
-  console.table(data);
 
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [logout, setLogout] = useState(false);
-  // const [user, setUser] = useState(false);
   const [userLetter, setUserLetter] = useState("");
 
+  const {} = useLogoutQuery(undefined, {
+    skip: !logout ? true : false,
+  });
+
   const { user } = useSelector((state) => state.auth);
-  console.log("User is :");
-  console.log(user);
 
   useEffect(() => {
     if (user) {
       let name = user.name;
       name = name.split("")[0];
-      console.log("name is ");
-      console.log(name);
       setUserLetter(name);
     }
   }, [user]);
@@ -95,9 +90,9 @@ const Header = ({ activeItem, setOpen, open }) => {
   };
 
   const handleLogout = async () => {
+    await signOut();
+    setLogout(true);
     router.push("/login");
-    // if (logout) {
-    // }
   };
 
   return (
@@ -154,7 +149,7 @@ const Header = ({ activeItem, setOpen, open }) => {
                 <HoverCard className="cursor-pointer">
                   <HoverCardTrigger>
                     <Avatar>
-                      {data && <AvatarImage src={`${data.user.image} `} />}
+                      {user && <AvatarImage src={user.avatar} />}
                       <AvatarFallback>{userLetter}</AvatarFallback>
                     </Avatar>
                   </HoverCardTrigger>

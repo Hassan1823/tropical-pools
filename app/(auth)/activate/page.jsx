@@ -17,19 +17,16 @@ const ActivateUser = () => {
   const router = useRouter();
   const [activationCode, setActivationCode] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
-  console.log(activationCode);
 
   const { token } = useSelector((state) => state.auth);
   const [activation, { isSuccess, error }] = useActivationMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("User Activated Successfully");
       toast.success("User Activated Successfully");
       router.push("/login");
     }
     if (error) {
-      console.log(error);
       toast.error("Invalid Code");
     }
   }, [isSuccess, error]);

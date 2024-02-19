@@ -34,8 +34,6 @@ const LoginPage = () => {
   useEffect(() => {
     if (isSuccess) {
       const message = data?.message || "Logged In Successfully";
-      console.log("message is :");
-      console.log(message);
       toast.success(message);
 
       router.push("/");
@@ -43,8 +41,6 @@ const LoginPage = () => {
     if (loginError) {
       if ("data" in loginError) {
         const errorData = loginError;
-        console.log("error is:");
-        console.log(errorData.data.message);
         toast.error(errorData.data.message);
       }
     }
@@ -61,14 +57,9 @@ const LoginPage = () => {
 
   // ~ handle form onsubmit
   const onSubmit = async (values) => {
-    console.log(values);
     setError("");
     setSuccess("");
 
-    // startTransition(() => {
-    //   // setSuccess("All Done !");
-    //   console.log(`Waiting for the response ...`);
-    // });
     const { email, password } = values;
     await login({ email, password });
   };

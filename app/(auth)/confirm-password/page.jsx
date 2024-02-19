@@ -49,7 +49,6 @@ const ConfirmPassword = () => {
         activation_code: code,
         newPassword: newPassword,
       };
-      console.log(data);
     } else if (!newPassword || !confirmPassword || !code) {
       setErrorMessage("Please Fill All Fields");
     } else {

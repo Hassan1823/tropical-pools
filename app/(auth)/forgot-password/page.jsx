@@ -21,8 +21,6 @@ const ForgotPassword = () => {
     if (isSuccess) {
       toast.success(data.message);
       router.push("/confirm-password");
-      console.log("data");
-      console.log(data);
     }
     if (error) {
       if ("data" in error) {
@@ -34,7 +32,6 @@ const ForgotPassword = () => {
 
   const handleSubmitEmail = async () => {
     if (email) {
-      console.log("Email is :", email);
       await forgotPassword({ email });
       setMessage("");
     } else {

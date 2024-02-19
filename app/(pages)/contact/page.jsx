@@ -41,13 +41,11 @@ const ContactPage = () => {
 
   // ~ handle form onsubmit
   const onSubmit = (values) => {
-    console.log(values);
     setError("");
     setSuccess("");
 
     startTransition(() => {
       setSuccess("All Done !");
-      console.log(`Waiting for the response ...`);
     });
   };
 

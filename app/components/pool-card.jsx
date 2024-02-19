@@ -62,7 +62,6 @@ const PoolCard = () => {
   };
 
   let pages = Math.ceil(PoolDetailsData.length / range);
-  console.log("pages are : ", pages);
 
   const indexLimit = pages >= 3 ? 3 : pages;
 

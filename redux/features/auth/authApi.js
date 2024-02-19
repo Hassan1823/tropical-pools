@@ -14,7 +14,7 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(
-            userNewPassword({
+            userRegistration({
               token: result.data.activationToken,
               // user: result.user,
             })
@@ -44,9 +44,9 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
-          const result = await queryFulfilled();
+          const result = await queryFulfilled;
           dispatch(
-            userRegistration({
+            userNewPassword({
               token: result.data.activationToken,
               // user: result.user,
             })
@@ -129,6 +129,15 @@ export const authApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+
+    sendQuery: builder.mutation({
+      query: (data) => ({
+        url: "send-query",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -140,4 +149,5 @@ export const {
   useSetUserPasswordMutation,
   useLogoutQuery,
   useSocialAuthMutation,
+  useSendQueryMutation,
 } = authApi;

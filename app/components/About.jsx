@@ -14,8 +14,6 @@ import { images } from "@/lib/images";
 import SliderSwiper from "./thumbnail";
 
 const AboutComp = () => {
-  // console.log("images are :");
-  // console.table(images);
   return (
     <div className="flex flex-col w-full h-auto pt-8 text-center">
       <h1 className="text-3xl font-bold text-black lg:text-4xl">About Us</h1>

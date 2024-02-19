@@ -1,13 +1,13 @@
 "use client";
 
-import { Outfit } from "next/font/google";
-import "./globals.css";
-import Header from "./components/Header";
-import { useState } from "react";
-import Footer from "./components/Footer";
-import { Providers } from "./Provider";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
+import { Outfit } from "next/font/google";
+import { useState } from "react";
+import { Providers } from "./Provider";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import "./globals.css";
 
 const inter = Outfit({ subsets: ["latin"] });
 
