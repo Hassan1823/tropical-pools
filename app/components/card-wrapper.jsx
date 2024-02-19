@@ -11,6 +11,7 @@ import {
 
 import { CgGoogle } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 
 const CardWrapper = ({
   children,
@@ -32,7 +33,10 @@ const CardWrapper = ({
       <CardFooter>
         <div className="flex items-center justify-center w-full h-auto">
           <Button size="lg" variant="outline">
-            <CgGoogle className="w-6 h-6 text-blue-400" />
+            <CgGoogle
+              className="w-6 h-6 text-blue-400"
+              onClick={() => signIn("google")}
+            />
           </Button>
         </div>
       </CardFooter>

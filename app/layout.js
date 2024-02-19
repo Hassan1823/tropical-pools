@@ -7,6 +7,7 @@ import { useState } from "react";
 import Footer from "./components/Footer";
 import { Providers } from "./Provider";
 import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -17,11 +18,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <Header open={open} setOpen={setOpen} activeItem={activeItem} />
-          {children}
-          <Footer />
+          <SessionProvider>
+            <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+            {children}
+            <Footer />
+            <Toaster />
+          </SessionProvider>
         </Providers>
-        <Toaster />
       </body>
     </html>
   );

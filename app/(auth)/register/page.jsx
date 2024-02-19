@@ -68,15 +68,15 @@ const RegisterPage = () => {
     setSuccess("");
 
     const { email, password, name } = values;
-    await register({ email, password, name });
-    startTransition(async () => {
-      if (values.password === values.confirmPassword) {
-        setSuccess("All Done !");
-        console.log(`Waiting for the response ...`);
-      } else {
-        setError("Password Must Be Matched");
-      }
-    });
+    if (values.password === values.confirmPassword) {
+      // setSuccess("All Done !");
+      await register({ email, password, name });
+      console.log(`Waiting for the response ...`);
+    } else {
+      setError("Password Must Be Matched");
+    }
+    // startTransition(async () => {
+    // });
   };
 
   return (

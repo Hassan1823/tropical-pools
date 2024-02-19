@@ -65,10 +65,10 @@ const LoginPage = () => {
     setError("");
     setSuccess("");
 
-    startTransition(() => {
-      // setSuccess("All Done !");
-      console.log(`Waiting for the response ...`);
-    });
+    // startTransition(() => {
+    //   // setSuccess("All Done !");
+    //   console.log(`Waiting for the response ...`);
+    // });
     const { email, password } = values;
     await login({ email, password });
   };

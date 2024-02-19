@@ -20,9 +20,6 @@ const ConfirmPassword = () => {
 
   const { token } = useSelector((state) => state.auth);
 
-  console.log("token : ");
-  console.log(token);
-
   const [setUserPassword, { isSuccess, isLoading, error, data }] =
     useSetUserPasswordMutation();
 

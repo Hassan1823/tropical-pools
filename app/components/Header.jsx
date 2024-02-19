@@ -1,7 +1,7 @@
 "use client";
 
 // !imports
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,12 +11,70 @@ import { IoIosCart } from "react-icons/io";
 
 // ! local imports
 import NavItems from "@/utils/NavItems";
+import { useSelector } from "react-redux";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import {
+  useLogoutQuery,
+  useSocialAuthMutation,
+} from "@/redux/features/auth/authApi";
+
+import { toast } from "sonner";
+
+import { useSession } from "next-auth/react";
 
 const Header = ({ activeItem, setOpen, open }) => {
+  const router = useRouter();
+
+  const { data } = useSession();
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+  // const { user: userData } = useSelector((state) => state.auth);
+
+  console.log("data");
+  console.table(data);
+
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [logout, setLogout] = useState(false);
-  const [user, setUser] = useState(false);
+  // const [user, setUser] = useState(false);
+  const [userLetter, setUserLetter] = useState("");
+
+  const { user } = useSelector((state) => state.auth);
+  console.log("User is :");
+  console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      let name = user.name;
+      name = name.split("")[0];
+      console.log("name is ");
+      console.log(name);
+      setUserLetter(name);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user.email,
+          name: data?.user.name,
+          avatar: data?.user.image,
+        });
+      }
+    }
+    if (isSuccess) {
+      toast.success("Logged In Successfully");
+      router.push("/");
+    }
+  }, [data, user]);
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -34,6 +92,12 @@ const Header = ({ activeItem, setOpen, open }) => {
         setOpenSidebar(false);
       }
     }
+  };
+
+  const handleLogout = async () => {
+    router.push("/login");
+    // if (logout) {
+    // }
   };
 
   return (
@@ -87,18 +151,21 @@ const Header = ({ activeItem, setOpen, open }) => {
 
               {/*  for desktop */}
               {user ? (
-                <Link href={"/"} className="ml-4">
-                  <Image
-                    src={user.avatar ? user.avatar?.url : avatar}
-                    alt="user profile picture"
-                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
-                    width={30}
-                    height={30}
-                    style={{
-                      border: activeItem === 5 ? "2px solid #ffc107" : "none",
-                    }}
-                  />
-                </Link>
+                <HoverCard className="cursor-pointer">
+                  <HoverCardTrigger>
+                    <Avatar>
+                      {data && <AvatarImage src={`${data.user.image} `} />}
+                      <AvatarFallback>{userLetter}</AvatarFallback>
+                    </Avatar>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <Button
+                      onClick={user ? handleLogout : router.push("/login")}
+                    >
+                      {user ? "Logout" : "Login"}
+                    </Button>
+                  </HoverCardContent>
+                </HoverCard>
               ) : (
                 <div className="flex ">
                   <Link href={"/login"} passHref>
@@ -132,9 +199,7 @@ const Header = ({ activeItem, setOpen, open }) => {
             <div className="w-[70%] fixed z-[99999999999] h-screen bg-blue-900 bg-opacity-90 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
               <Link href={`/cart`} passHref>
-                <IoIosCart
-                  className="w-12 h-12 mx-auto my-3 text-white duration-300 cursor-pointer hover:scale-110 hover:drop-shadow-lg"
-                />
+                <IoIosCart className="w-12 h-12 mx-auto my-3 text-white duration-300 cursor-pointer hover:scale-110 hover:drop-shadow-lg" />
               </Link>
 
               <br />
