@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <SessionProvider>
             <Header open={open} setOpen={setOpen} activeItem={activeItem} />
-            {children}
+            <div>{children}</div>
             <Footer />
             <Toaster />
           </SessionProvider>

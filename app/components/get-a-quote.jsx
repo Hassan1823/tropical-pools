@@ -36,7 +36,7 @@ const GetAQuote = ({ btnLabel }) => {
 
   const [isPending, startTransition] = useTransition();
 
-  const [sendQuery, { isSuccess, error: queryError, data }] =
+  const [sendQuery, { isSuccess, error: queryError, isLoading, data }] =
     useSendQueryMutation();
 
   // ! define the form
@@ -115,11 +115,11 @@ const GetAQuote = ({ btnLabel }) => {
                           <FormLabel>Name :</FormLabel>
                           <FormControl>
                             <Input
-                              disabled={isPending}
+                              disabled={isLoading}
                               {...field}
                               placeholder="John"
                               type="text"
-                              className={`${isPending && "cursor-not-allowed"}`}
+                              className={`${isLoading && "cursor-not-allowed"}`}
                             />
                           </FormControl>
                           <FormMessage />
@@ -134,11 +134,11 @@ const GetAQuote = ({ btnLabel }) => {
                           <FormLabel>Phone no :</FormLabel>
                           <FormControl>
                             <Input
-                              disabled={isPending}
+                              disabled={isLoading}
                               {...field}
                               placeholder="+090078601"
                               type="number"
-                              className={`${isPending && "cursor-not-allowed"}`}
+                              className={`${isLoading && "cursor-not-allowed"}`}
                             />
                           </FormControl>
                           <FormMessage />
@@ -153,11 +153,11 @@ const GetAQuote = ({ btnLabel }) => {
                           <FormLabel>Email :</FormLabel>
                           <FormControl>
                             <Input
-                              disabled={isPending}
+                              disabled={isLoading}
                               {...field}
                               placeholder="example@gmail.com"
                               type="email"
-                              className={`${isPending && "cursor-not-allowed"}`}
+                              className={`${isLoading && "cursor-not-allowed"}`}
                             />
                           </FormControl>
                           <FormMessage />
@@ -172,11 +172,11 @@ const GetAQuote = ({ btnLabel }) => {
                           <FormLabel>Message :</FormLabel>
                           <FormControl>
                             <Textarea
-                              disabled={isPending}
+                              disabled={isLoading}
                               {...field}
                               placeholder="Your Query ..."
                               type="text"
-                              className={`${isPending && "cursor-not-allowed"}`}
+                              className={`${isLoading && "cursor-not-allowed"}`}
                             />
                           </FormControl>
                           <FormMessage />
@@ -190,8 +190,8 @@ const GetAQuote = ({ btnLabel }) => {
 
                   <Button
                     type="submit"
-                    className={`w-full ${isPending && "cursor-not-allowed"}`}
-                    disabled={isPending}
+                    className={`w-full ${isLoading && "cursor-not-allowed"}`}
+                    disabled={isLoading}
                   >
                     Submit
                   </Button>

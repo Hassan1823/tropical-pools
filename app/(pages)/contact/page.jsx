@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useTransition, useEffect } from "react";
+
 import { FaPhone } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosTime } from "react-icons/io";
@@ -23,10 +25,16 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { QueriesSchema } from "@/schema";
-import { useTransition } from "react";
+
+import { useSendQueryMutation } from "@/redux/features/auth/authApi";
+
+import { toast } from "sonner";
 
 const ContactPage = () => {
   const [isPending, startTransition] = useTransition();
+
+  const [sendQuery, { isSuccess, error: queryError, isLoading, data }] =
+    useSendQueryMutation();
 
   // ! define the form
   const form = useForm({
@@ -40,14 +48,30 @@ const ContactPage = () => {
   });
 
   // ~ handle form onsubmit
-  const onSubmit = (values) => {
-    setError("");
-    setSuccess("");
+  const onSubmit = async (values) => {
+    // setError("");
+    // setSuccess("");
 
-    startTransition(() => {
-      setSuccess("All Done !");
+    await sendQuery({
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      message: values.message,
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Query Submitted Successfully");
+      (prevShowForm) => setShowForm(false);
+    }
+    if (queryError) {
+      if ("data" in queryError) {
+        const errorMessage = queryError;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [queryError, isSuccess]);
 
   return (
     <div className="w-full h-auto min-h-screen">
@@ -120,11 +144,11 @@ const ContactPage = () => {
                         <FormLabel>Name :</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={isPending}
+                            disabled={isLoading}
                             {...field}
                             placeholder="John"
                             type="text"
-                            className={`${isPending && "cursor-not-allowed"}`}
+                            className={`${isLoading && "cursor-not-allowed"}`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -139,11 +163,11 @@ const ContactPage = () => {
                         <FormLabel>Phone no :</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={isPending}
+                            disabled={isLoading}
                             {...field}
                             placeholder="+090078601"
                             type="number"
-                            className={`${isPending && "cursor-not-allowed"}`}
+                            className={`${isLoading && "cursor-not-allowed"}`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -158,11 +182,11 @@ const ContactPage = () => {
                         <FormLabel>Email :</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={isPending}
+                            disabled={isLoading}
                             {...field}
                             placeholder="example@gmail.com"
                             type="email"
-                            className={`${isPending && "cursor-not-allowed"}`}
+                            className={`${isLoading && "cursor-not-allowed"}`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -177,11 +201,11 @@ const ContactPage = () => {
                         <FormLabel>Message :</FormLabel>
                         <FormControl>
                           <Textarea
-                            disabled={isPending}
+                            disabled={isLoading}
                             {...field}
                             placeholder="Your Query ..."
                             type="text"
-                            className={`${isPending && "cursor-not-allowed"}`}
+                            className={`${isLoading && "cursor-not-allowed"}`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -195,8 +219,8 @@ const ContactPage = () => {
 
                 <Button
                   type="submit"
-                  className={`w-full ${isPending && "cursor-not-allowed"}`}
-                  disabled={isPending}
+                  className={`w-full ${isLoading && "cursor-not-allowed"}`}
+                  disabled={isLoading}
                 >
                   Submit
                 </Button>
