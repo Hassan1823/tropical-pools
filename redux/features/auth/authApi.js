@@ -138,6 +138,23 @@ export const authApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+
+    userCart: builder.query({
+      query: (data) => ({
+        url: "user-cart",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    deleteUserProduct: builder.mutation({
+      query: (data) => ({
+        url: "delete-cart-product",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -150,4 +167,6 @@ export const {
   useLogoutQuery,
   useSocialAuthMutation,
   useSendQueryMutation,
+  useUserCartQuery,
+  useDeleteUserProductMutation,
 } = authApi;

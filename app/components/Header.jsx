@@ -10,7 +10,7 @@ import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import { IoIosCart } from "react-icons/io";
 
 // ! local imports
-import NavItems from "@/utils/NavItems";
+// import NavItems from "@/utils/NavItems";
 import { useSelector } from "react-redux";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -29,8 +29,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { signOut, useSession } from "next-auth/react";
+import NavItems from "@/utils/NavItems";
 
-const Header = ({ activeItem, setOpen, open }) => {
+const Header = ({ activeItem, setOpen, headerItems }) => {
   const router = useRouter();
 
   const { data } = useSession();
@@ -122,7 +123,11 @@ const Header = ({ activeItem, setOpen, open }) => {
             </div>
 
             <div className="flex items-center gap-2 ">
-              <NavItems activeItem={activeItem} isMobile={false} />
+              <NavItems
+                activeItem={activeItem}
+                isMobile={false}
+                headerItems={headerItems}
+              />
 
               {/* only for desktop */}
               <div className="hidden md:flex">
@@ -192,7 +197,11 @@ const Header = ({ activeItem, setOpen, open }) => {
             id="screen"
           >
             <div className="w-[70%] fixed z-[99999999999] h-screen bg-blue-900 bg-opacity-90 top-0 right-0">
-              <NavItems activeItem={activeItem} isMobile={true} />
+              <NavItems
+                activeItem={activeItem}
+                isMobile={true}
+                headerItems={headerItems}
+              />
               <Link href={`/cart`} passHref>
                 <IoIosCart className="w-12 h-12 mx-auto my-3 text-white duration-300 cursor-pointer hover:scale-110 hover:drop-shadow-lg" />
               </Link>

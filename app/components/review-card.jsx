@@ -1,18 +1,14 @@
-import {
-      Card,
-      CardContent,
-      CardHeader,
-      CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import StarRating from "./StarRating";
+import avatar from "@/public/images/avatar.png";
 
-const ReviewCard = ({data}) => {
+const ReviewCard = ({ data }) => {
   return (
-    <Card className="h-auto w-80 ">
+    <Card className="h-auto min-h-42 w-80 ">
       <CardHeader className="flex flex-row items-center justify-center w-full h-auto gap-5 text-center">
         <Image
-          src={data.src}
+          src={avatar}
           alt="logo"
           width={50}
           height={50}
@@ -21,14 +17,12 @@ const ReviewCard = ({data}) => {
         <div className="flex flex-col">
           <CardTitle className="text-lg">{data.name}</CardTitle>
           <CardContent>
-            <StarRating reviewCount={data.reviewCount} />
+            <StarRating reviewCount={data.rating} />
           </CardContent>
         </div>
       </CardHeader>
       {/* <CardFooter> */}
-      <CardContent className="text-sm text-center">
-        {data.review}
-      </CardContent>
+      <CardContent className="text-sm text-center">{data.review}</CardContent>
       {/* </CardFooter> */}
     </Card>
   );

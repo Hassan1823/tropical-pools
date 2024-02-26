@@ -44,4 +44,7 @@ export const ProductReviewSchema = z.object({
   review: z.string().min(1, {
     message: "Please Write Your Review",
   }),
+  rating: z.string().min(1, {
+    message: "Please Rate Your Experience",
+  }),
 });

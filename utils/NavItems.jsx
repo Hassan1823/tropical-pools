@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { headerItems } from "@/lib/data";
 
-const NavItems = ({ activeItem, isMobile }) => {
+const NavItems = ({ activeItem, isMobile, headerItems }) => {
   return (
     <>
       <div className="hidden w-auto gap-8 text-black md:flex">
@@ -25,7 +24,6 @@ const NavItems = ({ activeItem, isMobile }) => {
       {isMobile && (
         <div className="flex flex-col w-auto gap-8 text-black md:hidden">
           <div className="flex flex-col w-full gap-2 py-12 space-y-6 text-center">
-            
             {headerItems &&
               headerItems.map((item, index) => (
                 <Link

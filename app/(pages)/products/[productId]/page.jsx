@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,36 +10,104 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ProductReviewSchema } from "@/schema";
+import Image from "next/image";
+import { useEffect, useState, useTransition } from "react";
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import Loader from "@/app/components/Loader";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  useAddToCartMutation,
+  useReviewProductMutation,
+  useSingleProductMutation,
+} from "@/redux/features/products/productApi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 const SingleProduct = ({ params }) => {
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  let productId = params.productId || "";
+
+  // console.log("ProductIDDDD");
+  // console.log(productId);
+  const [pending, setPending] = useState(false);
+  const [productData, setProductData] = useState([]);
 
   const [isPending, startTransition] = useTransition();
 
   const [quantity, setQuantity] = useState(1);
-  const [stock, setStock] = useState(16);
+  const [stock, setStock] = useState(0);
+  const [allowReview, setAllowReview] = useState(false);
+
+  // ! get product starts here
+  const [singleProduct, { data, isLoading, isSuccess, error }] =
+    useSingleProductMutation();
+
+  useEffect(() => {
+    singleProduct({ productId });
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("success");
+      console.log(data?.product);
+      setProductData(data?.product);
+      setStock(data?.product.quantity);
+      setPending(false);
+    }
+    if (isLoading) {
+      setPending(true);
+    }
+
+    if (error) {
+      console.log("errors");
+      toast.error("Something went wrong");
+    }
+  }, [isSuccess, error]);
+  // ! get product ends here
+
+  // ~----------------------------------
+
+  // ! add to cart starts here
+  const [addToCart, { isSuccess: cartSuccess, error: cartError }] =
+    useAddToCartMutation();
+
+  const productAddToCart = async ({ productId, quantity }) => {
+    console.log("product id");
+    console.log(productId);
+    console.log("quantity");
+    console.log(quantity);
+    await addToCart({ product: productId, quantity });
+  };
+
+  useEffect(() => {
+    if (cartSuccess) {
+      toast.success("Product added to cart");
+    }
+    if (cartError) {
+      if ("data" in cartError) {
+        const errorMessage = cartError.data.message;
+        toast.error(errorMessage);
+      }
+    }
+  }, [cartSuccess, cartError]);
+  // ! add to cart ends here
 
   const handleIncrement = () => {
-    if (quantity >= 1) {
+    if (quantity >= 1 && stock >= 1) {
       setQuantity((prevQuantity) => quantity + 1);
     }
   };
   const handleDecrement = () => {
-    if (quantity > 1) {
+    if (quantity > 1 && stock >= 1) {
       setQuantity((prevQuantity) => quantity - 1);
     }
   };
@@ -51,116 +117,182 @@ const SingleProduct = ({ params }) => {
     resolver: zodResolver(ProductReviewSchema),
     defaultValues: {
       review: "",
+      rating: "",
     },
   });
 
+  // * -------------------------------
+  // * add review to product starts here
+
+  const [
+    reviewProduct,
+    { isSuccess: reviewSuccess, error: reviewError, data: reviewData },
+  ] = useReviewProductMutation();
+
   //   form submit function
   const onSubmit = (values) => {
-    setError("");
-    setSuccess("");
-
-    startTransition(() => {
-      setSuccess("All Done!");
+    reviewProduct({
+      rating: parseInt(values.rating),
+      review: values.review,
+      product: productId,
     });
   };
 
+  useEffect(() => {
+    if (reviewSuccess) {
+      toast.success(reviewData.message);
+    }
+    if (reviewError) {
+      if ("data" in reviewError) {
+        const errorMessage = reviewError.data.message;
+        toast.error(errorMessage);
+      }
+    }
+  }, [reviewSuccess, reviewError]);
+
+  // * add review to product ends here
+  // ~----------------------------
+
   return (
-    <div className="w-full min-h-screen h-auto flex md:flex-row flex-col justify-center items-start md:text-start text-center lg:py-24 md:py-20 py-14 gap-8">
-      {/* left div */}
-      <div className="md:w-1/2 w-full h-auto flex justify-center items-center">
-        <Image
-          src={"/images/pump.png"}
-          alt="pump"
-          width={300}
-          height={300}
-          className="object-contain"
-        />
-      </div>
-      {/* right div */}
-      <div className="md:w-1/2 w-full h-auto flex flex-col justify-center md:items-start items-center space-y-2">
-        <h1 className="w-full text-2xl font-bold text-black lg:text-3xl">
-          {params.productId || "No Product"}
-        </h1>
-        <p className="text-xs">{`product id # ${"090078601"}`}</p>
-        <h1 className="text-lg">
-          {`RS/- `} <b>{9810}</b>
-        </h1>
-        <div className="w-auto h-auto flex text-center justify-center items-center gap-4">
-          <Button size="icon" onClick={handleDecrement}>
-            -
-          </Button>
-          <p className=""> {quantity}</p>
-          <Button size="icon" onClick={handleIncrement}>
-            +
-          </Button>
-        </div>
+    <>
+      {pending ? (
+        <>
+          <Loader />
+        </>
+      ) : (
+        <div className="w-full min-h-screen h-auto flex md:flex-row flex-col justify-center items-start md:text-start text-center lg:py-24 md:py-20 py-14 gap-8">
+          {/* left div */}
+          <div className="md:w-1/2 w-full h-auto flex justify-center items-center">
+            <Image
+              src={productData.image}
+              alt="pump"
+              width={300}
+              height={300}
+              className="object-contain"
+            />
+          </div>
+          {/* right div */}
+          <div className="md:w-1/2 w-full h-auto flex flex-col justify-center md:items-start items-center space-y-2">
+            <h1 className="w-full text-2xl font-bold text-black lg:text-3xl">
+              {productData.title || "No Product"}
+            </h1>
+            <p className="text-xs">{`product id # ${productData._id}`}</p>
+            <h1 className="text-lg">
+              {`RS/- `} <b>{productData.price}</b>
+            </h1>
+            <div
+              className={`w-auto h-auto flex text-center justify-center items-center gap-4`}
+            >
+              <Button
+                size="icon"
+                onClick={handleDecrement}
+                className={!stock >= 1 && "cursor-not-allowed"}
+              >
+                -
+              </Button>
+              <p className=""> {quantity}</p>
+              <Button
+                size="icon"
+                onClick={handleIncrement}
+                className={!stock >= 1 && "cursor-not-allowed"}
+              >
+                +
+              </Button>
+            </div>
 
-        {/* stock status */}
-        <p className="text-sm">
-          {" "}
-          <b>Status :</b> {stock >= 1 ? "In Stock" : "Out of Stock"}
-        </p>
+            {/* stock status */}
+            <p className="text-sm">
+              {" "}
+              <b>Status :</b>{" "}
+              {stock >= 1 ? `${productData.quantity} in Stock` : "Out of Stock"}
+            </p>
 
-        {/* desription */}
-        <h1 className="text-lg">Description</h1>
-        <p className="text-xs w-2/3">
-          {
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor sit, amet consectetur adipisicing elit."
-          }
-        </p>
-        <Dialog>
-          <DialogTrigger>
-            <Button variant="default" size="sm">
-              Submit Review
+            {/* desription */}
+            <h1 className="text-lg">Description</h1>
+            <p className="text-xs w-2/3">{productData.description}</p>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => productAddToCart({ productId, quantity })}
+            >
+              Add to Cart
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Submit Your Review</DialogTitle>
-              <DialogDescription>
-                <Form {...form}>
-                  <form
-                    className="space-y-6 pt-4"
-                    onSubmit={form.handleSubmit(onSubmit)}
-                  >
-                    <div className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="review"
-                        render={({ field }) => (
-                          <FormItem>
-                            {/* <FormLabel>Review</FormLabel> */}
-                            <FormControl>
-                              <Textarea
-                                disabled={isPending}
-                                {...field}
-                                placeholder="Write Your Review"
-                                type="text"
-                                className={`${
-                                  isPending && "cursor-not-allowed"
-                                }`}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <Button
-                      type="submit"
-                      className={`w-full ${isPending && "cursor-not-allowed"}`}
-                      disabled={isPending}
-                    >
-                      Submit
-                    </Button>
-                  </form>
-                </Form>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </div>
+            <Dialog>
+              <DialogTrigger>
+                <Button variant="default" size="sm">
+                  Submit Review
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Submit Your Review</DialogTitle>
+                  <DialogDescription>
+                    <Form {...form}>
+                      <form
+                        className="space-y-6 pt-4"
+                        onSubmit={form.handleSubmit(onSubmit)}
+                      >
+                        <div className="space-y-4">
+                          <FormField
+                            control={form.control}
+                            name="review"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Textarea
+                                    disabled={isPending}
+                                    {...field}
+                                    placeholder="Write Your Review"
+                                    type="text"
+                                    className={`${
+                                      isPending && "cursor-not-allowed"
+                                    }`}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="rating"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Input
+                                    disabled={isPending}
+                                    {...field}
+                                    placeholder="rating"
+                                    type="number"
+                                    className={`${
+                                      isPending && "cursor-not-allowed"
+                                    }`}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <Button
+                          type="submit"
+                          className={`w-full ${
+                            isPending && "cursor-not-allowed"
+                          }`}
+                          disabled={isPending}
+                        >
+                          Submit
+                        </Button>
+                      </form>
+                    </Form>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

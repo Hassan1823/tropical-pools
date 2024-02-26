@@ -24,7 +24,7 @@ const ProductCard = ({ product }) => {
     <Card className="w-72 h-auto flex flex-col justify-center items-center text-center">
       <CardHeader>
         <Image
-          src={product.src}
+          src={product.image}
           alt=""
           width={200}
           height={200}
@@ -42,7 +42,7 @@ const ProductCard = ({ product }) => {
         </CardDescription>
       </CardContent>
       <CardFooter>
-        <Link href={`${pathName}/${product.title}`} passHref>
+        <Link href={`${pathName}/${product._id}`} passHref>
           <Button variant="default" size="lg">
             Explore
           </Button>
