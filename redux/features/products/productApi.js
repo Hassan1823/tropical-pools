@@ -63,6 +63,23 @@ export const productApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+
+    confirmOrders: builder.query({
+      query: (data) => ({
+        url: `all-orders`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    changeOrderStatus: builder.mutation({
+      query: (data) => ({
+        url: `change-status`,
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -74,4 +91,6 @@ export const {
   useReviewProductMutation,
   useConfirmOrderMutation,
   useAllProductReviewsQuery,
+  useConfirmOrdersQuery,
+  useChangeOrderStatusMutation,
 } = productApi;
