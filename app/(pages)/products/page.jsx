@@ -178,7 +178,11 @@ const ProductsPage = () => {
             {products ? (
               <>
                 {products.map((product, index) => (
-                  <ProductCard product={product} key={index} />
+                  <ProductCard
+                    product={product}
+                    key={index}
+                    deleteBtn={false}
+                  />
                 ))}
               </>
             ) : (

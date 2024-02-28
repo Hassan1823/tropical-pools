@@ -1,14 +1,13 @@
 "use client";
 
 import { useConfirmOrdersQuery } from "@/redux/features/products/productApi";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import Loader from "./Loader";
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -37,7 +36,7 @@ const AdminComp = ({ user }) => {
   }, [isSuccess, error]);
 
   return (
-    <div className="w-full min-h-[70vh] h-auto flex flex-col justify-start items-center space-y-8">
+    <div className="w-full min-h-[80vh] h-auto flex flex-col justify-start items-center space-y-8">
       {isLoading ? (
         <Loader />
       ) : (
@@ -47,7 +46,7 @@ const AdminComp = ({ user }) => {
               <h1 className="w-full text-center text-2xl font-semibold">
                 Orders
               </h1>
-              <h1 className="w-full text-center text-2xl font-semibold">
+              <h1 className="w-full text-center text-xl font-semibold">
                 {`Total revenue: RS/- ${data?.orders.reduce(
                   (total, order) => total + (order.totalPrice || 0),
                   0

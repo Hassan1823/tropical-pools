@@ -48,3 +48,18 @@ export const ProductReviewSchema = z.object({
     message: "Please Rate Your Experience",
   }),
 });
+
+export const AddProductSchema = z.object({
+  title: z.string().min(1, {
+    message: "please enter a title",
+  }),
+  description: z.string().min(1, {
+    message: "please enter a description",
+  }),
+  price: z.string().min(1, {
+    message: "please enter a price",
+  }),
+  quantity: z.string().min(1, {
+    message: "please enter a quantity",
+  }),
+});

@@ -1,14 +1,16 @@
-import React from "react";
+"use client";
 
+import React, { useEffect } from "react";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardContent,
-  CardFooter,
-  CardDescription,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 
@@ -16,16 +18,37 @@ import { usePathname } from "next/navigation";
 
 import Image from "next/image";
 import StarRating from "./StarRating";
+import { useDeleteProductMutation } from "@/redux/features/products/productApi";
+import { toast } from "sonner";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, deleteBtn }) => {
   const pathName = usePathname();
 
+  const [deleteProduct, { data, error, isSuccess }] =
+    useDeleteProductMutation();
+
+  const handleDeleteProduct = async (productId) => {
+    await deleteProduct({ productId });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message);
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMessage = error.data.message;
+        toast.error(errorMessage);
+      }
+    }
+  }, [isSuccess, error]);
+
   return (
-    <Card className="w-72 h-auto flex flex-col justify-center items-center text-center">
+    <Card className="w-72 h-[65vh] flex flex-col justify-between items-center text-center">
       <CardHeader>
         <Image
           src={product.image}
-          alt=""
+          alt="product image"
           width={200}
           height={200}
           className="object-contain"
@@ -41,12 +64,22 @@ const ProductCard = ({ product }) => {
           <StarRating reviewCount={product.rating} />
         </CardDescription>
       </CardContent>
-      <CardFooter>
-        <Link href={`${pathName}/${product._id}`} passHref>
+      <CardFooter className="space-x-2">
+        <Link href={`/products/${product._id}`} passHref>
           <Button variant="default" size="lg">
             Explore
           </Button>
         </Link>
+        {deleteBtn && (
+          <Button
+            variant="default"
+            size="lg"
+            className="bg-red-500 hover:bg-red-600"
+            onClick={() => handleDeleteProduct(product._id)}
+          >
+            Delete
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

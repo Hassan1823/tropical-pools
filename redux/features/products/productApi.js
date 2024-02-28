@@ -80,6 +80,24 @@ export const productApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+
+    deleteProduct: builder.mutation({
+      query: (data) => ({
+        url: "delete-product",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
+
+    addProduct: builder.mutation({
+      query: (data) => ({
+        url: "create-product",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -93,4 +111,6 @@ export const {
   useAllProductReviewsQuery,
   useConfirmOrdersQuery,
   useChangeOrderStatusMutation,
+  useDeleteProductMutation,
+  useAddProductMutation,
 } = productApi;

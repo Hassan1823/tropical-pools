@@ -35,7 +35,29 @@ export const apiSlice = createApi({
         }
       },
     }),
+
+    allUsers: builder.query({
+      query: (data) => ({
+        url: "all-users",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    updateUserRole: builder.mutation({
+      query: (data) => ({
+        url: "user-role",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useRefreshTokenQuery, useLoadUserQuery } = apiSlice;
+export const {
+  useRefreshTokenQuery,
+  useLoadUserQuery,
+  useAllUsersQuery,
+  useUpdateUserRoleMutation,
+} = apiSlice;
