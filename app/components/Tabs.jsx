@@ -11,15 +11,14 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoIosTime } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import CanvasComp from "./Canvas";
-import Map from "./Map";
 
 const TabsComp = () => {
   return (
     <Tabs defaultValue="account" className="w-[90%] md:w-[80%] lg:w-[70%]">
-      <TabsList className="flex flex-wrap w-full h-auto justify-evenly items-center text-center">
+      <TabsList className="flex flex-wrap items-center w-full h-auto text-center justify-evenly">
         <TabsTrigger value="specs">Pool Specification</TabsTrigger>
         <TabsTrigger value="3dimages">3D Images</TabsTrigger>
-        <TabsTrigger value="address">Address</TabsTrigger>
+        {/* <TabsTrigger value="address">Address</TabsTrigger> */}
         <TabsTrigger value="others">Other Details</TabsTrigger>
         <TabsTrigger value="contact">Contact Us</TabsTrigger>
       </TabsList>
@@ -56,14 +55,13 @@ const TabsComp = () => {
       <TabsContent value="3dimages">
         <Card>
           <CanvasComp />
-          {/* <D3Images /> */}
         </Card>
       </TabsContent>
-      <TabsContent value="address">
+      {/* <TabsContent value="address">
         <Card>
           <Map address="1600 Amphitheatre Parkway, Mountain View, CA" />
         </Card>
-      </TabsContent>
+      </TabsContent> */}
       <TabsContent value="others">
         <Card className="py-6">
           <CardHeader>

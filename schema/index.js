@@ -40,6 +40,12 @@ export const QueriesSchema = z.object({
   }),
 });
 
+export const QueryReplySchema = z.object({
+  queryReply: z.string().min(1, {
+    message: "Please Write Your Query Answer",
+  }),
+});
+
 export const ProductReviewSchema = z.object({
   review: z.string().min(1, {
     message: "Please Write Your Review",

@@ -4,7 +4,7 @@ import Loader from "@/app/components/Loader";
 import { headerItems } from "@/lib/data";
 import {
   useDeleteUserProductMutation,
-  useUserCartQuery,
+  useUserActiveOrdersQuery,
 } from "@/redux/features/auth/authApi";
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,6 @@ import Image from "next/image";
 import { MdDeleteForever } from "react-icons/md";
 
 import { toast } from "sonner";
-import Link from "next/link";
 
 import Header from "@/app/components/Header";
 
@@ -25,19 +24,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useConfirmOrderMutation } from "@/redux/features/products/productApi";
 
-const CartPage = () => {
+const ActiveOrdersPage = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 
   // *-------------------
   // * get user carts products starts here
-  const { data, isSuccess, error, isLoading, refetch } = useUserCartQuery(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
+  const { data, isSuccess, error, isLoading, refetch } =
+    useUserActiveOrdersQuery({}, { refetchOnMountOrArgChange: true });
   useEffect(() => {
     if (isSuccess) {
       console.log("success in getting cart data ");
@@ -94,29 +90,6 @@ const CartPage = () => {
 
   // ~--------------------
 
-  // * confirm the order
-  const [confirmOrder, { isSuccess: confirmSuccess, error: confirmError }] =
-    useConfirmOrderMutation();
-
-  const handleConfirmOrder = () => {
-    confirmOrder({ status: "processing" });
-  };
-
-  useEffect(() => {
-    if (confirmSuccess) {
-      refetch();
-      toast.success("Order Placed Successfully");
-    }
-    if (confirmError) {
-      if ("data" in confirmError) {
-        const errorMessage = confirmError.data.message;
-        toast.error(errorMessage);
-      }
-    }
-  }, [confirmError, confirmSuccess]);
-
-  // * confirm the order
-
   return (
     <>
       <Header
@@ -126,27 +99,13 @@ const CartPage = () => {
         headerItems={headerItems}
       />
       <div className="flex flex-col items-center justify-start w-full h-auto min-h-screen">
-        <div className="flex items-center justify-end w-full h-auto p-4">
-          <Link href="/cart/active-orders" passHref className="mr-[5%]">
-            <Button variant="default" size="sm">
-              Active Orders
-            </Button>
-          </Link>
-        </div>
         {isLoading ? (
           <Loader />
         ) : data && data.cart?.products.length !== 0 ? (
           <>
             <h1 className="w-full h-auto p-4 text-2xl font-bold text-center">
-              Cart Items
+              Active Orders
             </h1>
-            <div className="flex items-center justify-end w-full h-auto">
-              <Link href="/cart/active-orders" passHref className="mr-[5%]">
-                <Button variant="default" size="sm">
-                  Active Orders
-                </Button>
-              </Link>
-            </div>
 
             {/* * products */}
             <div className="w-full h-auto px-12 py-8">
@@ -218,15 +177,6 @@ const CartPage = () => {
               <div className="w-full h-auto p-4 text-center">
                 Total Price : RS/- <b>{totalAmount}</b>
               </div>
-              <div className="w-full h-auto p-4 text-center">
-                <Button
-                  variant="default"
-                  size="lg"
-                  onClick={() => handleConfirmOrder()}
-                >
-                  Proceed
-                </Button>
-              </div>
             </div>
           </>
         ) : (
@@ -239,4 +189,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default ActiveOrdersPage;

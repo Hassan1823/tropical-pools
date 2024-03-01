@@ -130,6 +130,34 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    userCart: builder.query({
+      query: (data) => ({
+        url: "user-cart",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    userActiveOrders: builder.query({
+      query: (data) => ({
+        url: "user-active-orders",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    deleteUserProduct: builder.mutation({
+      query: (data) => ({
+        url: "delete-cart-product",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
+
+    // ~-----------------------------
+    // *----------- Queries---------------
+    // ~-----------------------------
     sendQuery: builder.mutation({
       query: (data) => ({
         url: "send-query",
@@ -139,17 +167,17 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    userCart: builder.query({
+    getAllQueries: builder.query({
       query: (data) => ({
-        url: "user-cart",
+        url: "all-queries",
         method: "GET",
         credentials: "include",
       }),
     }),
 
-    deleteUserProduct: builder.mutation({
+    sendQueryReply: builder.mutation({
       query: (data) => ({
-        url: "delete-cart-product",
+        url: "query-reply",
         method: "POST",
         body: data,
         credentials: "include",
@@ -166,7 +194,10 @@ export const {
   useSetUserPasswordMutation,
   useLogoutQuery,
   useSocialAuthMutation,
-  useSendQueryMutation,
   useUserCartQuery,
+  useUserActiveOrdersQuery,
   useDeleteUserProductMutation,
+  useSendQueryMutation,
+  useGetAllQueriesQuery,
+  useSendQueryReplyMutation,
 } = authApi;
