@@ -1,27 +1,21 @@
-// "use client";
-
-// import React from "react";
-
-// import { Canvas, useLoader } from "@react-three/fiber";
-// import { GLFTLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-
-// const CanvasComp = () => {
-//   const myModel = useLoader(GLFTLoader, "/Arialla.glb");
-//   return (
-//     <Canvas style={{ height: "500px", width: "100%" }}>
-//       <pointLight position={[-10, -10, -10]} color="#48cc90" intensity={5000} />
-//       <pointLight position={[10, 10, 10]} color="#36e2e2" intensity={5000} />
-//       <primitive object={myModel.scene} />
-//     </Canvas>
-//   );
-// };
-
-// export default CanvasComp;
+"use client";
 
 import React from "react";
+import { Environment, OrbitControls } from "@react-three/drei";
+import { TestModel } from "@/3d-components/BathTub";
+import { Canvas } from "@react-three/fiber";
 
 const CanvasComp = () => {
-  return <div>CanvasComp</div>;
+  return (
+    <div className="w-full h-[100vh]">
+      <Canvas>
+        <ambientLight />
+        <OrbitControls />
+        <TestModel />
+        <Environment preset="sunset" />
+      </Canvas>
+    </div>
+  );
 };
 
 export default CanvasComp;
