@@ -123,6 +123,17 @@ const Header = ({ activeItem, setOpen, headerItems }) => {
             </div>
 
             <div className="flex items-center gap-2 ">
+              {user?.role === "admin" && (
+                <>
+                  <Link
+                    href={"/admin"}
+                    className={`hover:text-semibold text-base mx-2 lg:mx-0 text-white`}
+                  >
+                    Admin
+                  </Link>
+                </>
+              )}
+
               <NavItems
                 activeItem={activeItem}
                 isMobile={false}
