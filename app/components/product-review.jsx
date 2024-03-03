@@ -1,23 +1,27 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { ReviewData } from "@/lib/data";
-import ReviewCard from "./review-card";
-import { useAllProductReviewsQuery } from "@/redux/features/products/productApi";
+import { useSingleProductReviewMutation } from "@/redux/features/products/productApi";
+import { useEffect, useState } from "react";
 import Loader from "./Loader";
+import ReviewCard from "./review-card";
 
-const CustomerReview = () => {
+const ProductReview = ({ productId }) => {
+  const [firstLoad, setFirstLoad] = useState(true);
   const [reviewData, setReviewData] = useState([]);
 
-  const { data, isSuccess, error, isLoading } = useAllProductReviewsQuery(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
+  const [singleProductReview, { data, isSuccess, error, isLoading }] =
+    useSingleProductReviewMutation();
 
+  useEffect(() => {
+    if (firstLoad) {
+      setFirstLoad(false);
+      singleProductReview({ productId: productId });
+    }
+  }, [firstLoad]);
   useEffect(() => {
     if (isSuccess) {
       console.log("Success in getting reviews");
-      setReviewData(data?.allReviews);
+      setReviewData(data?.productsReviews);
     }
     if (error) {
       if ("data" in error) {
@@ -27,13 +31,18 @@ const CustomerReview = () => {
     }
   }, [isSuccess, error]);
 
+  // const getReviewsData = async () => {
+  // };
+
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : !data ? (
         <div className="flex items-center justify-center w-full h-auto p-4 text-center">
-          No Reviews Available
+          <h1 className="text-3xl font-bold text-black lg:text-4xl">
+            No Reviews Available
+          </h1>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center w-full h-auto p-8 text-center">
@@ -51,4 +60,4 @@ const CustomerReview = () => {
   );
 };
 
-export default CustomerReview;
+export default ProductReview;

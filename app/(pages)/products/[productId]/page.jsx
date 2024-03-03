@@ -32,6 +32,7 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import ProductReview from "@/app/components/product-review";
 
 const SingleProduct = ({ params }) => {
   let productId = params.productId || "";
@@ -160,137 +161,143 @@ const SingleProduct = ({ params }) => {
           <Loader />
         </>
       ) : (
-        <div className="w-full min-h-screen h-auto flex md:flex-row flex-col justify-center items-start md:text-start text-center lg:py-24 md:py-20 py-14 gap-8">
-          {/* left div */}
-          <div className="md:w-1/2 w-full h-auto flex justify-center items-center">
-            <Image
-              src={productData.image}
-              alt="pump"
-              width={300}
-              height={300}
-              className="object-contain"
-            />
-          </div>
-          {/* right div */}
-          <div className="md:w-1/2 w-full h-auto flex flex-col justify-center md:items-start items-center space-y-2">
-            <h1 className="w-full text-2xl font-bold text-black lg:text-3xl">
-              {productData.title || "No Product"}
-            </h1>
-            <p className="text-xs">{`product id # ${productData._id}`}</p>
-            <h1 className="text-lg">
-              {`RS/- `} <b>{productData.price}</b>
-            </h1>
-            <div
-              className={`w-auto h-auto flex text-center justify-center items-center gap-4`}
-            >
-              <Button
-                size="icon"
-                onClick={handleDecrement}
-                className={!stock >= 1 && "cursor-not-allowed"}
-              >
-                -
-              </Button>
-              <p className=""> {quantity}</p>
-              <Button
-                size="icon"
-                onClick={handleIncrement}
-                className={!stock >= 1 && "cursor-not-allowed"}
-              >
-                +
-              </Button>
+        <>
+          <div className="flex flex-col items-start justify-center w-full h-auto gap-8 text-center md:flex-row md:text-start lg:py-24 md:py-20 py-14">
+            {/* left div */}
+            <div className="flex items-center justify-center w-full h-auto md:w-1/2">
+              <Image
+                src={productData.image}
+                alt="pump"
+                width={300}
+                height={300}
+                className="object-contain"
+              />
             </div>
-
-            {/* stock status */}
-            <p className="text-sm">
-              {" "}
-              <b>Status :</b>{" "}
-              {stock >= 1 ? `${productData.quantity} in Stock` : "Out of Stock"}
-            </p>
-
-            {/* desription */}
-            <h1 className="text-lg">Description</h1>
-            <p className="text-xs w-2/3">{productData.description}</p>
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => productAddToCart({ productId, quantity })}
-            >
-              Add to Cart
-            </Button>
-            <Dialog>
-              <DialogTrigger>
-                <Button variant="default" size="sm">
-                  Submit Review
+            {/* right div */}
+            <div className="flex flex-col items-center justify-center w-full h-auto space-y-2 md:w-1/2 md:items-start">
+              <h1 className="w-full text-2xl font-bold text-black lg:text-3xl">
+                {productData.title || "No Product"}
+              </h1>
+              <p className="text-xs">{`product id # ${productData._id}`}</p>
+              <h1 className="text-lg">
+                {`RS/- `} <b>{productData.price}</b>
+              </h1>
+              <div
+                className={`w-auto h-auto flex text-center justify-center items-center gap-4`}
+              >
+                <Button
+                  size="icon"
+                  onClick={handleDecrement}
+                  className={!stock >= 1 && "cursor-not-allowed"}
+                >
+                  -
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Submit Your Review</DialogTitle>
-                  <DialogDescription>
-                    <Form {...form}>
-                      <form
-                        className="space-y-6 pt-4"
-                        onSubmit={form.handleSubmit(onSubmit)}
-                      >
-                        <div className="space-y-4">
-                          <FormField
-                            control={form.control}
-                            name="review"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Textarea
-                                    disabled={isPending}
-                                    {...field}
-                                    placeholder="Write Your Review"
-                                    type="text"
-                                    className={`${
-                                      isPending && "cursor-not-allowed"
-                                    }`}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="rating"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Input
-                                    disabled={isPending}
-                                    {...field}
-                                    placeholder="rating"
-                                    type="number"
-                                    className={`${
-                                      isPending && "cursor-not-allowed"
-                                    }`}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <Button
-                          type="submit"
-                          className={`w-full ${
-                            isPending && "cursor-not-allowed"
-                          }`}
-                          disabled={isPending}
+                <p className=""> {quantity}</p>
+                <Button
+                  size="icon"
+                  onClick={handleIncrement}
+                  className={!stock >= 1 && "cursor-not-allowed"}
+                >
+                  +
+                </Button>
+              </div>
+
+              {/* stock status */}
+              <p className="text-sm">
+                {" "}
+                <b>Status :</b>{" "}
+                {stock >= 1
+                  ? `${productData.quantity} in Stock`
+                  : "Out of Stock"}
+              </p>
+
+              {/* desription */}
+              <h1 className="text-lg">Description</h1>
+              <p className="w-2/3 text-xs">{productData.description}</p>
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => productAddToCart({ productId, quantity })}
+              >
+                Add to Cart
+              </Button>
+              <Dialog>
+                <DialogTrigger>
+                  <Button variant="default" size="sm">
+                    Submit Review
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Submit Your Review</DialogTitle>
+                    <DialogDescription>
+                      <Form {...form}>
+                        <form
+                          className="pt-4 space-y-6"
+                          onSubmit={form.handleSubmit(onSubmit)}
                         >
-                          Submit
-                        </Button>
-                      </form>
-                    </Form>
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
+                          <div className="space-y-4">
+                            <FormField
+                              control={form.control}
+                              name="review"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Textarea
+                                      disabled={isPending}
+                                      {...field}
+                                      placeholder="Write Your Review"
+                                      type="text"
+                                      className={`${
+                                        isPending && "cursor-not-allowed"
+                                      }`}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="rating"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      disabled={isPending}
+                                      {...field}
+                                      placeholder="rating"
+                                      type="number"
+                                      className={`${
+                                        isPending && "cursor-not-allowed"
+                                      }`}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <Button
+                            type="submit"
+                            className={`w-full ${
+                              isPending && "cursor-not-allowed"
+                            }`}
+                            disabled={isPending}
+                          >
+                            Submit
+                          </Button>
+                        </form>
+                      </Form>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-        </div>
+
+          <ProductReview productId={productId} />
+        </>
       )}
     </>
   );

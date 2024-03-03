@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import { apiSlice } from "../api/apiSlice";
 
 export const productApi = apiSlice.injectEndpoints({
@@ -38,6 +39,15 @@ export const productApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    productsByPrice: builder.mutation({
+      query: (data) => ({
+        url: "product-by-price",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
+
     reviewProduct: builder.mutation({
       query: (data) => ({
         url: `create-review`,
@@ -60,6 +70,15 @@ export const productApi = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `all-reviews`,
         method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    singleProductReview: builder.mutation({
+      query: (data) => ({
+        url: `product-reviews`,
+        method: "POST",
+        body: data,
         credentials: "include",
       }),
     }),
@@ -113,4 +132,6 @@ export const {
   useChangeOrderStatusMutation,
   useDeleteProductMutation,
   useAddProductMutation,
+  useSingleProductReviewMutation,
+  useProductsByPriceMutation,
 } = productApi;

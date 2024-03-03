@@ -22,6 +22,7 @@ import {
 import {
   useGetProductsMutation,
   useProductsByNameMutation,
+  useProductsByPriceMutation,
 } from "@/redux/features/products/productApi";
 
 import Loader from "@/app/components/Loader";
@@ -31,12 +32,15 @@ const range = 8;
 
 const ProductsPage = () => {
   const [search, setSearch] = useState("");
+  const [first, setFirst] = useState(0);
+  const [second, setSecond] = useState(1000);
   const [limit, setLimit] = useState(range);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [products, setProducts] = useState([]);
   // const [searchProductsData, setSearchProductsData] = useState([]);
   const [searchMode, setSearchMode] = useState(false);
+  const [priceMode, setPriceMode] = useState(false);
 
   // ! get products starts here
 
@@ -44,7 +48,7 @@ const ProductsPage = () => {
     useGetProductsMutation();
 
   useEffect(() => {
-    if (!searchMode) {
+    if (!searchMode || !priceMode) {
       getProducts({
         limit,
         currentPage,
@@ -104,6 +108,58 @@ const ProductsPage = () => {
     }
   }, [searchSuccess, searchError]);
   // ! products by names search ends here
+  // ~-----------------
+
+  // * -----------------------------------
+
+  // ! products by price search starts here
+
+  const [
+    productsByPrice,
+    { isSuccess: priceSuccess, error: priceError, data: priceData },
+  ] = useProductsByPriceMutation();
+
+  const priceProducts = async () => {
+    if (first && second) {
+      (prevCurrentPage) => setCurrentPage(1);
+      (prevLimit) => setLimit(range);
+      setProducts([]);
+      await productsByPrice({ first: first, second: second });
+    } else {
+      setPriceMode(false);
+      toast.error("Please Enter Some Value");
+    }
+  };
+
+  // useEffect(() => {
+  //   if (priceSuccess) {
+  //     toast.success("Price filter data success");
+  //     console.log("Price data is :");
+  //     console.log(priceData);
+  //     setProducts(priceData?.products);
+  //   }
+  //   if (priceError) {
+  //     toast.error("Price filter data error");
+  //   }
+  // }, [priceError, priceSuccess]);
+
+  useEffect(() => {
+    if (priceSuccess) {
+      setPriceMode(true);
+      console.log("Successfully Search");
+      // (prevProducts) => setProducts(data?.products);
+      setProducts(priceData?.products);
+      // setSearchProductsData(priceData?.products);
+      console.log(priceData);
+    }
+    if (priceError) {
+      if ("data" in priceError) {
+        const errorMessage = priceError.data.message;
+        toast.error(errorMessage);
+      }
+    }
+  }, [priceSuccess, priceError]);
+  // ! products by price search ends here
 
   const handleNextPage = () => {
     if (currentPage >= 1 && currentPage < totalPages) {
@@ -117,11 +173,14 @@ const ProductsPage = () => {
   };
 
   let pages = 1;
-  if (!searchMode) {
+  if (!searchMode && !priceMode) {
     pages = data?.totalPages;
   }
   if (searchMode) {
     pages = searchData?.totalPages;
+  }
+  if (priceMode) {
+    pages = priceData?.totalPages;
   }
 
   const indexLimit = pages >= 3 ? 3 : pages;
@@ -133,12 +192,12 @@ const ProductsPage = () => {
           <Loader />
         </>
       ) : (
-        <div className="w-full min-h-screen h-auto">
+        <div className="w-full h-auto min-h-screen">
           {/* head bar  */}
-          <div className="w-full h-auto py-8 md:px-20 px-8 flex justify-between items-center gap-8">
+          <div className="flex items-center justify-between w-full h-auto gap-8 px-8 py-8 md:px-20">
             {/* search bar */}
-            <div className="flex w-full max-w-sm items-center space-x-2">
-              <div className="flex justify-center items-center space-x-2">
+            <div className="flex items-center w-full max-w-sm space-x-2">
+              <div className="flex items-center justify-center space-x-2">
                 <Input
                   type="text"
                   placeholder="Search"
@@ -173,8 +232,26 @@ const ProductsPage = () => {
             </Link>
           </div>
 
+          <div className="flex items-center justify-between lg:w-[25%] md:w-[50%] w-[70%] h-auto gap-1 px-8 md:px-20">
+            <Input
+              type="number"
+              placeholder="99"
+              value={first}
+              onChange={(e) => setFirst(e.target.value)}
+            />
+            <Input
+              type="number"
+              placeholder="99"
+              value={second}
+              onChange={(e) => setSecond(e.target.value)}
+            />
+            <Button type="submit" size="sm" onClick={() => priceProducts()}>
+              Filter
+            </Button>
+          </div>
+
           {/* ProductsPage */}
-          <div className="w-full h-auto p-8 flex flex-wrap justify-center items-center gap-8">
+          <div className="flex flex-wrap items-center justify-center w-full h-auto gap-8 p-8">
             {products ? (
               <>
                 {products.map((product, index) => (
@@ -187,7 +264,7 @@ const ProductsPage = () => {
               </>
             ) : (
               <>
-                <h1 className="w-full h-auto flex justify-center items-center text-center p-4">
+                <h1 className="flex items-center justify-center w-full h-auto p-4 text-center">
                   {"No Product Found"}
                 </h1>
               </>
