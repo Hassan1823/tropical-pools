@@ -117,6 +117,15 @@ export const productApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+
+    editProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `update-product/${id}`,
+        method: "POST",
+        body: { id, data },
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -134,4 +143,5 @@ export const {
   useAddProductMutation,
   useSingleProductReviewMutation,
   useProductsByPriceMutation,
+  useEditProductMutation,
 } = productApi;

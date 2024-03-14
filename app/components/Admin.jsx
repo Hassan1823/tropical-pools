@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { ComboboxDemo } from "@/utils/ComboboxDemo";
 
-const AdminComp = ({ user }) => {
+const AdminComp = () => {
   const { data, isSuccess, error, isLoading, refetch } = useConfirmOrdersQuery(
     {},
     {

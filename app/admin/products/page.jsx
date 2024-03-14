@@ -76,8 +76,6 @@ const AdminProductPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("success");
-      // console.log(data);
       setCurrentPage(data?.currentPage);
       setTotalPages(data?.totalPages);
       setProducts(data?.products);
@@ -112,11 +110,9 @@ const AdminProductPage = () => {
   useEffect(() => {
     if (searchSuccess) {
       setSearchMode(true);
-      console.log("Successfully Search");
       // (prevProducts) => setProducts(data?.products);
       setProducts(searchData?.products);
       // setSearchProductsData(searchData?.products);
-      console.log(searchData);
     }
     if (searchError) {
       if ("data" in searchError) {
@@ -160,8 +156,7 @@ const AdminProductPage = () => {
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
         const avatar = fileReader.result;
-        console.log("avatar");
-        console.log(avatar);
+
         setImage(avatar);
         base64ImageString = avatar; // Save the base64 string to the variable
       }
@@ -169,18 +164,27 @@ const AdminProductPage = () => {
     fileReader.readAsDataURL(e.target.files[0]);
   };
 
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   // Define an async function to handle image conversion
   const handleImageConversion = async () => {
     const imagePath = "path_to_your_image.jpg"; // Update with actual image path
-    const base64String = await convertImageToBase64(imagePath); // Ensure convertImageToBase64 is defined
+    const imageFile = new File([imagePath], "image.jpg", {
+      type: "image/jpeg",
+    });
+    const base64String = await convertImageToBase64(imageFile);
     base64ImageString = base64String; // Save the base64 string to the variable
   };
 
   // Call the async function to handle image conversion
   handleImageConversion();
-
-  console.log("base64ImageString");
-  console.log(base64ImageString);
 
   // ! define the form
   const form = useForm({
@@ -200,10 +204,6 @@ const AdminProductPage = () => {
   ] = useAddProductMutation();
   // ~ handle form onsubmit
   const onSubmit = async (values) => {
-    console.log(values);
-    console.log("image");
-    console.log(image);
-
     await addProduct({
       image: image,
       title: values.title,
@@ -417,7 +417,12 @@ const AdminProductPage = () => {
             {products ? (
               <>
                 {products.map((product, index) => (
-                  <ProductCard product={product} key={index} deleteBtn={true} />
+                  <ProductCard
+                    product={product}
+                    key={index}
+                    deleteBtn={true}
+                    editBtn={true}
+                  />
                 ))}
               </>
             ) : (
