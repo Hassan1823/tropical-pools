@@ -76,10 +76,10 @@ export const EditProductSchema = z.object({
   description: z.string().min(1, {
     message: "please enter a description",
   }),
-  price: z.number().min(1, {
+  price: z.string().min(1, {
     message: "please enter a price",
   }),
-  quantity: z.number().min(1, {
+  quantity: z.string().min(1, {
     message: "please enter a quantity",
   }),
 });
